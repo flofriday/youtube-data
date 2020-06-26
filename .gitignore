@@ -1,6 +1,9 @@
 # Personal Data
 data*
 
+# Jupyter save files
+.ipynb_checkpoints
+
 # OS Files
 .DS_Store
 [Dd]esktop.ini
