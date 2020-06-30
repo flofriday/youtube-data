@@ -14,5 +14,5 @@ The notebook can do more than just tell you what creators you watch the most, so
 
 ### Run the notebook
 1) Download your youtube data (and select Format=JSON) [Website](https://takeout.google.com/)
-2) Copy the folder "Takeout" into the folder with the Notebook.
+2) Copy the folder "Takeout" into the folder with the Notebook. (Note: I just got a notice that this only works if your language is set to english. If that is not the case you need to modify the path in the first code-cell. This bug will be fixed in the next commits.)
 3) Run the notebook with `jupyter lab PATH-TO-NOTEBOOK`
