@@ -1,5 +1,5 @@
 # youtube-data
-Jupyter Notebook to analyze your youtube data.
+Jupyter Notebook to analyze your YouTube data.
 
 ## Screenshot
 ![](screenshot.png)
