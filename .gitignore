@@ -2,6 +2,12 @@
 data*
 Takeout*
 
+# Bot data
+bot.db
+
+# python cache
+__pycache__
+
 # Jupyter save files
 .ipynb_checkpoints
 
