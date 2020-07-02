@@ -142,7 +142,7 @@ def searchword_plot(search: pd.DataFrame, number: int):
 
     # Create the plot
     df = df["word"].value_counts()
-    df = df[df < len(search)]
+    df = df[df < len(search) * 0.9]
     df = df.head(number).sort_values()
     plot = df.plot(kind="barh", figsize=[6.4, number * 0.28], color=COLOR)
     plot.set_title(f"Top {number} searchwords")

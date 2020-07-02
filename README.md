@@ -19,6 +19,14 @@ docker run -e TELEGRAM_TOKEN='XXXX' --rm --name youtubebot-container youtubebot-
 ```
 Replace `XXXX` with your telegram token.
 
+```
+docker build -t youtubebot-template .
+docker volume create youtubebot-volume
+docker run -d --restart unless-stopped \
+      -e TELEGRAM_TOKEN='XXXX' \
+      --mount type=volume,source=youtubebot-volume,target=/app/data \
+      --name youtubebot-container youtubebot-template
+```
 
 ## Run the jupyter notebook
 ### Requirements
