@@ -67,6 +67,18 @@ class User:
 
         return User(result[0], result[1], result[2], result[3])
 
+    @staticmethod
+    def statistics() -> (int, int):
+        """Create statistics about the bots usage"""
+        user_query = "SELECT COUNT(*) FROM users"
+        analyzes_query = "SELECT SUM(analyzes) FROM users"
+        conn = sqlite3.connect(_db_path)
+        cur = conn.cursor()
+        users = cur.execute(user_query).fetchone()[0]
+        analyzes = cur.execute(analyzes_query).fetchone()[0]
+        conn.close()
+        return users, analyzes
+
 
 def __init__(db_path: str):
     global _db_path
@@ -76,7 +88,7 @@ def __init__(db_path: str):
     query = (
         "CREATE TABLE IF NOT EXISTS users "
         "(telegram_id INTEGER NOT NULL PRIMARY KEY, state INTEGER, "
-        "timezone TEXT, analyzes INTEGER);"
+        "timezone TEXT, analyzes INTEGER)"
     )
     cur.execute(query)
     conn.commit()
