@@ -282,7 +282,7 @@ def main():
     """Start the bot."""
 
     # Initialize the database
-    user.__init__("bot.db")
+    user.__init__("data/bot.db")
 
     # Read the config from the environment
     token = os.environ["TELEGRAM_TOKEN"]
