@@ -4,7 +4,7 @@ Telegram bot and Jupyter Notebook to analyze your YouTube data.
 *[Try the bot](https://t.me/youtube_data_bot)*
 
 ## Screenshot
-![](screenshot.png)
+![Screenshot](screenshot.png)
 
 The notebook can do more than just tell you what creators you watch the most, so just try it out.
 
@@ -19,6 +19,8 @@ docker run -e TELEGRAM_TOKEN='XXXX' --rm --name youtubebot-container youtubebot-
 ```
 Replace `XXXX` with your telegram token.
 
+Note: This way all data will be lost once you shut down the bot. To prevent 
+this you can start the bot with a mounted docker volume.
 ```
 docker build -t youtubebot-template .
 docker volume create youtubebot-volume

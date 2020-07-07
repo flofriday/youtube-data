@@ -2,8 +2,8 @@ import logging
 import os
 import io
 import matplotlib
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
 import pytz
 import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -12,6 +12,11 @@ from telegram.ext.dispatcher import run_async
 import youtube_data as ytd
 import user
 from user import User, UserState
+
+# Disabling matplotlib from opening a window on the server
+matplotlib.use("Agg")
+plt.ioff()
+
 
 # Enable logging
 logging.basicConfig(
@@ -70,14 +75,18 @@ def start_command(update, context):
         message, parse_mode="Markdown", disable_web_page_preview=True
     )
 
+    # Also show all the available commands
+    help_command(update, context)
+
 
 @run_async
 def privacy_command(update, context):
+    """Tell the user how this bot manages their data"""
     message = (
         "*Privarcy* 🔒\n"
         "Privacy clearly is important, and this bot takes this subject "
         "seriously. Thats why *this bot doesn't save your personal "
-        "YouTube data*.\n\n"
+        "YouTube data*.\n"
         "However, this bot does save some userdata, which are either "
         "collected to enable some feature, or to enable some kind of "
         "analytics. Having this said, I will promise to allways make it "
@@ -107,12 +116,15 @@ def info_command(update, context):
     """Show the user what the bot thinks about them"""
     user = User.load(update.effective_user.id)
     message = (
-        f"Telegram ID: {user.telegram_id}"
+        "*User Info*\n"
+        f"Telegram ID: {user.telegram_id}\n"
         f"State: {UserState(user.state).name}\n"
         f"Timezone: {user.timezone}\n"
-        f"Number of anaylyzes: {user.analyzes}"
+        f"Number of reports: {user.analyzes}"
     )
-    update.message.reply_text(message, disable_web_page_preview=True)
+    update.message.reply_text(
+        message, parse_mode="Markdown", disable_web_page_preview=True
+    )
 
 
 @run_async
@@ -216,7 +228,7 @@ def analyze_search(update, context):
     df = None
     try:
         df = ytd.load_search_history(json, user.timezone)
-    except:
+    except Exception:
         update.message.reply_text(
             "An error occoured while parsing your file. 😵\n"
             "Maybe you uploaded a corrrupted file ?"
@@ -225,6 +237,7 @@ def analyze_search(update, context):
 
     # Overall information about the searches
     info_message = (
+        "*Absolut numbers*\n"
         f"Searches since {df['time'].min().strftime('%b %d %Y')}: "
         f"*{len(df)}*\n"
         f"Average searches per day: "
@@ -263,7 +276,7 @@ def analyze_watch(update, context):
     df = None
     try:
         df = ytd.load_watch_history(json, user.timezone)
-    except:
+    except Exception:
         update.message.reply_text(
             "An error occoured while parsing your file. 😵\n"
             "Maybe you uploaded a corrrupted file ?"
@@ -272,6 +285,7 @@ def analyze_watch(update, context):
 
     # Overall information about the searches
     info_message = (
+        "*Absolut numbers*\n"
         f"Videos watched since {df['time'].min().strftime('%b %d %Y')}: "
         f"*{len(df)}*\n"
         f"Average videos per day: "
