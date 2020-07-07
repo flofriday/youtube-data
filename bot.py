@@ -46,14 +46,13 @@ def start_command(update, context):
     """Send a message when the command /start is issued."""
     user = User.load(update.effective_user.id)
 
-    # TODO: The guide points nowhere
     message = (
         f"Hi {update.effective_user.name} 😊\n"
         "YouTube saves a lot of data about you, however I can help you to "
         "get some insight into this data. So for me to help you, you need to "
         "download your data and send me the files `watch-history.json` and "
-        "`search-history.json`. Here is a "
-        "[Guide](https://github.com/flofriday/youtube-data)"
+        "`search-history.json`. Here is a [Guide]"
+        "(https://github.com/flofriday/youtube-data/blob/master/Download_Guide.md)"
         " on how to download your personal data.\n\n"
         "Some of the graphs I can create are time-sensetive, so it is "
         "important that I know in which timezone you live in. At the moment I "
@@ -73,11 +72,29 @@ def start_command(update, context):
 
 
 @run_async
+def privacy_command(update, context):
+    message = (
+        "*Privarcy* 🔒\n"
+        "Privacy clearly is important, and this bot takes this subject "
+        "seriously. Thats why *this bot doesn't save your personal "
+        "YouTube data*.\n\n"
+        "However, this bot does save some userdata, which are either "
+        "collected to enable some feature, or to enable some kind of "
+        "analytics. Having this said, I will promise to allways make it "
+        "clear, what this bot collects. Therefore, I created the /info and "
+        "/statitic commands. The info command shows you all the data this bot "
+        "knows about you."
+    )
+    update.message.reply_text(message, parse_mode="Markdown")
+
+
+@run_async
 def help_command(update, context):
     """Send a message when the command /help is issued."""
     message = (
         "*Things I can do* 🤓\n"
         "/timezone - Set your timezone\n"
+        "/privacy - How this bot handles your data\n"
         "/info - Informations the bot has about you\n"
         "/statistic - Informations on the bots usage\n"
         "/help - This help message"
@@ -90,7 +107,9 @@ def info_command(update, context):
     """Show the user what the bot thinks about them"""
     user = User.load(update.effective_user.id)
     message = (
-        f"State: {UserState(user.state).name}\nTimezone: {user.timezone}\n"
+        f"Telegram ID: {user.telegram_id}"
+        f"State: {UserState(user.state).name}\n"
+        f"Timezone: {user.timezone}\n"
         f"Number of anaylyzes: {user.analyzes}"
     )
     update.message.reply_text(message, disable_web_page_preview=True)
@@ -299,6 +318,7 @@ def main():
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start_command))
     dp.add_handler(CommandHandler("timezone", timezone_command))
+    dp.add_handler(CommandHandler("privacy", privacy_command))
     dp.add_handler(CommandHandler("info", info_command))
     dp.add_handler(CommandHandler("statistic", statistic_command))
     dp.add_handler(CommandHandler("help", help_command))
